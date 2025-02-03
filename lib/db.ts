@@ -9,29 +9,28 @@ if (!MONGODB_URI) {
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conne: null, promise: null };
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
 export async function connectToMongodb() {
-  if (cached.conne) { // if connection connected
-    return cached.conne;
+  if (cached.conn) { // if connection connected
+    return cached.conn;
   }
 
   if (!cached.promise) { // if not connected
+    
     const opts = {
-      bufferCommand: true,
-      maxPoolSize: 10, // at a time how many connections requsted send
+      bufferCommands: true,
+      maxPoolSize: 10,  // at a time how many connections requsted send
     };
-    cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
-      .then(() => mongoose.connection);
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then(() => mongoose.connection);
   }
 
   try {
-    cached.conne = await cached.promise; //send the promise into connection
+    cached.conn = await cached.promise; //send the promise into connection
   } catch (error) {
     cached.promise = null;
     throw error;
   }
-  return cached.conne;
+  return cached.conn;
 }
