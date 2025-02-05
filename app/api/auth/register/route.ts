@@ -36,10 +36,10 @@ export async function POST(request:NextRequest){
        })
 
        return NextResponse.json(
-        {message:"User register successfully"},
-        {
-            status:201
-        }
+            {message:"User register successfully"},
+            {
+                status:201
+            }
        )
     } catch (error) {
         console.log(error);
@@ -49,6 +49,6 @@ export async function POST(request:NextRequest){
             {
                 status:500
             }
-           )
+        )
     }
 }
